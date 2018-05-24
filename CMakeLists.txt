@@ -59,10 +59,21 @@ add_definitions(-DPREFIX=${CMAKE_INSTALL_PREFIX})
 add_definitions(-DSO_SUFFIX="${CMAKE_SHARED_LIBRARY_SUFFIX}")
 
 if(ENABLE_COMPLX OR ENABLE_LC3TEST OR ENABLE_TESTS)
-set(wxWidgets_USE_LIBS stc xrc xml html adv net core base)
-find_package(wxWidgets REQUIRED)
-set(CMAKE_SKIP_RPATH TRUE)
-include(${wxWidgets_USE_FILE})
+	set(wxWidgets_USE_LIBS stc xrc xml html adv net core base)
+	if(CMAKE_HOST_WIN32)
+		add_subdirectory(submodules/wxWidgets)
+
+		#include(ExternalProject)
+		#ExternalProject_Add(
+		#	wxWidgets
+
+		#	SOURCE_DIR "${CMAKE_SOURCE_DIR}/submodules/wxWidgets"
+		#)
+	else(CMAKE_HOST_WIN32)
+		find_package(wxWidgets REQUIRED)
+		set(CMAKE_SKIP_RPATH TRUE)
+		include(${wxWidgets_USE_FILE})
+	endif(CMAKE_HOST_WIN32)
 endif(ENABLE_COMPLX OR ENABLE_LC3TEST OR ENABLE_TESTS)
 
 if(CMAKE_HOST_WIN32)
@@ -181,5 +192,7 @@ configure_file(
     "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
     IMMEDIATE @ONLY)
 
-add_custom_target(uninstall
-    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+if(NOT CMAKE_HOST_WIN32)
+	add_custom_target(uninstall
+		COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+endif(NOT CMAKE_HOST_WIN32)
