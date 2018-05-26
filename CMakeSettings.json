@@ -12,7 +12,8 @@
       "buildCommandArgs": "-v",
       "ctestCommandArgs": "",
       "variables": [
-        {"name": "wxWidgets_ROOT_DIR", "value": "${projectDir}\\..\\wxWidgets\\install"}
+        {"name": "wxWidgets_ROOT_DIR", "value": "${projectDir}\\..\\wxWidgets\\install"},
+        {"name": "dlfcn-win32_DIR", "value": "${projectDir}\\..\\dlfcn-win32\\install\\share\\dlfcn-win32\\"}
       ]
     },
     {
