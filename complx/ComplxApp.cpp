@@ -82,7 +82,7 @@ wxString address_str = wxEmptyString, register_fill_str = "random", memory_fill_
 wxArrayString files;
 ComplxFrame* complxframe;
 
-wxConfig* CreateConfig(void)
+wxFileConfig* CreateConfig(void)
 {
 #ifdef __linux__
     /// TODO remove when wxWidgets 3.2 trickles itself down to sweet Ubuntu (3.1 has xdg support).
@@ -112,7 +112,7 @@ bool ComplxApp::OnInit()
     SetAppName("Complx");
 
 
-    wxConfig* config = CreateConfig();
+    wxFileConfig* config = CreateConfig();
     wxConfigBase::Set(config);
 
     srand(time(NULL));
