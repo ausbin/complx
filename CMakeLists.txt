@@ -20,14 +20,18 @@ if(ENABLE_TESTS)
     enable_testing()
 endif(ENABLE_TESTS)
 
-# Require C++11 build
-if(NOT CMAKE_CXX_FLAGS MATCHES "-std=(c|gnu)\\+\\+11")
-    message(STATUS "This project requires C++11. Adding -std=c++11 to CXXFLAGS.")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" CACHE STRING "Flags used by the compiler during all build types." FORCE)
-endif()
+# Windows does not like gcc-isms
+if(NOT CMAKE_HOST_WIN32)
+    # Require C++11 build
+    if(NOT CMAKE_CXX_FLAGS MATCHES "-std=(c|gnu)\\+\\+11")
+        message(STATUS "This project requires C++11. Adding -std=c++11 to CXXFLAGS.")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" CACHE STRING "Flags used by the compiler during all build types." FORCE)
+    endif()
 
-# Additional debug flags
-set(CMAKE_CXX_FLAGS_DEBUG "-g -pg")
+    # Additional debug flags
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -pg")
+endif(NOT CMAKE_HOST_WIN32)
+
 # Install directories
 set(CMAKE_INSTALL_LIBDIR lib CACHE STRING "where to install libraries/plugins")
 set(CMAKE_INSTALL_BINDIR bin CACHE STRING "where to install programs")
@@ -38,10 +42,13 @@ if(ENABLE_COVERAGE)
 endif(ENABLE_COVERAGE)
 
 
-# Set default warning flags
-set(PROJECT_WARNING_FLAGS "-Wall -Wno-deprecated -Wno-deprecated-declarations" CACHE STRING "Compiler warning flags to include")
-mark_as_advanced(PROJECT_WARNING_FLAGS)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${PROJECT_WARNING_FLAGS}")
+# Windows does not like gcc-isms
+if(NOT CMAKE_HOST_WIN32)
+    # Set default warning flags
+    set(PROJECT_WARNING_FLAGS "-Wall -Wno-deprecated -Wno-deprecated-declarations" CACHE STRING "Compiler warning flags to include")
+    mark_as_advanced(PROJECT_WARNING_FLAGS)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${PROJECT_WARNING_FLAGS}")
+endif(NOT CMAKE_HOST_WIN32)
 
 # Default to release build if not specified
 if(NOT CMAKE_BUILD_TYPE)
@@ -51,9 +58,10 @@ if(NOT CMAKE_BUILD_TYPE)
     "MinSizeRel" "RelWithDebInfo")
 endif(NOT CMAKE_BUILD_TYPE)
 
-if(CMAKE_BUILD_TYPE MATCHES "Debug")
+# Windows does not like gcc-isms
+if(NOT CMAKE_HOST_WIN32 AND CMAKE_BUILD_TYPE MATCHES "Debug")
     set(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage")
-endif(CMAKE_BUILD_TYPE MATCHES "Debug")
+endif(NOT CMAKE_HOST_WIN32 AND CMAKE_BUILD_TYPE MATCHES "Debug")
 
 add_definitions(-DPREFIX=${CMAKE_INSTALL_PREFIX})
 add_definitions(-DSO_SUFFIX="${CMAKE_SHARED_LIBRARY_SUFFIX}")
