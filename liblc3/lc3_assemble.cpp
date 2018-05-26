@@ -12,6 +12,7 @@
 #include <cassert>
 #include <cstring>
 #include <cerrno>
+#include <cctype>
 
 #ifdef __linux__
 #include <netinet/in.h>

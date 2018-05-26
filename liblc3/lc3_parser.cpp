@@ -8,6 +8,7 @@
 #include <cassert>
 #include <cstring>
 #include <cerrno>
+#include <cctype>
 
 
 /** remove_comments

@@ -1,6 +1,7 @@
 #include "lc3_cmp.hpp"
 #include <string>
 #include <algorithm>
+#include <cctype>
 
 bool lc3_is_equal(const void* a, const void* b);
 bool lc3_is_less(const void* a, const void* b);

@@ -8,6 +8,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <dlfcn.h>
+#include <cctype>
 
 void lc3_init(lc3_state& state, bool randomize_registers, bool randomize_memory, short register_fill_value, short memory_fill_value)
 {

@@ -2,6 +2,7 @@
 #include <climits>
 #include <algorithm>
 #include <cerrno>
+#include <cctype>
 #include "lc3_params.hpp"
 
 ///TODO more proper error checking of these functions.
